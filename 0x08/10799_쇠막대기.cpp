@@ -14,8 +14,9 @@ int main(void)
     cin.tie(0);
     cin.getline(stick, 100001);
     stack<char> many_stick;
-    int many = 0; // 막대기의 개수
-    int sum = 0;  // 잘려진 후의 총 막대기 수.
+    int many = 0;  // 막대기의 개수
+    int sum = 0;   // 잘려진 후의 총 막대기 수.
+    int index = 0; // 마지막 ( 나왔을때의 인덱스.
     for (int i = 0; i < 100001; i++)
     {
         if (stick[i] == '\0')
@@ -25,17 +26,18 @@ int main(void)
             many++;
             sum++;
             many_stick.push(stick[i]);
+            index = i;
         }
         else if (stick[i] == ')')
         {
-            if (many_stick.top() == '(')
+            if (i == index + 1)
             {
                 many--;
                 sum--;
                 sum = sum + many;
                 many_stick.pop();
             }
-            else if (many_stick.top() == ')')
+            else
             {
                 many--;
                 many_stick.pop();
