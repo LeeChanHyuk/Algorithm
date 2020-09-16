@@ -28,7 +28,7 @@ main(void)
         int x = for_via_queue.front();
         for_via_queue.pop();
 
-        for (int i = 0; i < 3; i++)//
+        for (int i = 0; i < 3; i++)////
         {
             int qx;
             if(i==0)
