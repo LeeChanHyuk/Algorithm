@@ -7,7 +7,7 @@ int c;
 int flag;
 int map[100010];
 int visit[100010];
- 
+//창피하게여겨라.!
 int DFS(int a, int x)
 {
 	int cycle = 0;
@@ -20,7 +20,7 @@ int DFS(int a, int x)
 	visit[a] = 1;
  
 	if (b == x) {
-		flag = 1;
+		flag = 1; 
 		visit[x] = 1;
 		return 1;
 	}
