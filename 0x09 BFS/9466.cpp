@@ -28,7 +28,7 @@ int dfs(int num) // 학생 번호를 인자로 받고
 		choosen[num] = 1;
 	return a;
 }
-
+/*/**/
 int main(void)
 {
 	int test_case = 0;
