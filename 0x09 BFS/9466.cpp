@@ -1,81 +1,68 @@
+#include <bits/stdc++.h>
+#include <vector>
+#include <queue>
+#include <stack>
 #include <iostream>
-#include <cstring>
+#pragma warning(disable: 4996)
+
 using namespace std;
- 
-int n;
-int c;
-int flag;
-int map[100010];
-int visit[100010];
-//ì°½í”¼í•˜ê²Œì—¬ê²¨ë¼.!
-int DFS(int a, int x)
+
+char stds[100002]; // ¿ì¼± ÀüºÎ 0À¸·Î ÃÊ±âÈ­ µÈ »óÅÂ.
+char choosen[100002]; // ¿ì¼± ÀüºÎ 0À¸·Î ÃÊ±âÈ­ µÈ »óÅÂ.
+int first_num = 0;
+
+int dfs(int num) // ÇĞ»ı ¹øÈ£¸¦ ÀÎÀÚ·Î ¹Ş°í
 {
-	int cycle = 0;
- 
-	if (flag == 1 || visit[a] != 0) {
+	int next_num = stds[num];
+	if (choosen[num] == 1) // Ã£¾Æ°£ ÇĞ»ıÀÌ ÀÌ¹Ì Â¦ÀÌ ÀÖ¾úÀ» °æ¿ì.
 		return 0;
-	}
- 
-	int b = map[a];
-	visit[a] = 1;
- 
-	if (b == x) {
-		flag = 1; 
-		visit[x] = 1;
+	if (next_num == first_num) // Á¦´ë·Î ·çÇÁ°¡ Çü¼ºµÇ¾úÀ» °æ¿ì.
+	{
+		choosen[num] = 1;
 		return 1;
 	}
- 
-	if (visit[b] == 0) {
-		cycle = DFS(b, x);
-	}
-	
-	if (cycle == 1) {
-		visit[a] = 1;
-		return 1;
-	}
-	visit[a] = 0;
-	return 0;
+	if (next_num == num) // Ã£¾Æ°£ ÇĞ»ıÀÌ ÀÚ±âÀÚ½ÅÀÌ¶û ÇÑ´Ù°í ÇÒ °æ¿ì.
+		return 0;
+	int a = dfs(next_num);
+	if (a == 1)
+		choosen[num] = 1;
+	return a;
 }
- 
-int main(int argc, char *argv[])
+
+int main(void)
 {
-	int testcase;
- 
-	scanf("%d", &testcase);
- 
-	while (testcase--) {
-		c = 0;
- 
-		scanf("%d", &n);
- 
-		memset(map, 0, sizeof(map));
-		memset(visit, 0, sizeof(visit));
- 
-		for (int i = 1; i <= n; ++i) {
-			int a;
-			scanf("%d", &a);
-			map[i] = a;
+	int test_case = 0;
+	cin >> test_case;
+	for (int test = 0; test < test_case; test++)
+	{
+		int num = 0;
+		cin >> num;
+		int poor = 0;
+		for (int i = 1; i <= num; i++)
+		{
+			int stud = 0;
+			cin >> stud;
+			stds[i] = stud;
 		}
- 
-		for (int i = 1; i <= n; ++i) {
-			if (visit[i] == 1) {
+		// ÀÌ·¯¸é ¿©±â±îÁø ÀÏ´Ü ÇĞ»ıµéÀÌ Â¦Áş°í ½ÍÀº »ó´ë¸¦ ´Ù ¹ŞÀº »óÅÂ~
+
+		for (int i = 1; i <= num; i++)
+		{
+			if (choosen[i] == 1)
 				continue;
-			}
- 
-			flag = 0;
- 
-			if (DFS(i, i) == 0) {
-				visit[i] = -1;
-			}
+			first_num = i;
+			int boolean = dfs(i);
+			// ÀÌ°Ô 1ÀÌ¸é ÀüºÎ 1·ÎÇØ¾ßÇÏ´Â°Å°í, 0ÀÌ¸é ÀüºÎ 0À¸·Î ÇØ¾ßÇÏ´Â °Å´Ù.
+			if (boolean != 1)
+				poor++;
+			else
+				choosen[i] = 1;
 		}
-		
-		for (int i = 1; i <= n; ++i) {
-			if (visit[i] == 1) {
-				++c;
-			}
-		}
- 
-		printf("%d\n", n - c);
+		printf("%d\n", poor);
+		memset(stds, 0, sizeof(stds));
+		memset(choosen, 0, sizeof(choosen));
 	}
+	int test = 0;
+	scanf("%d", &test);
 	return 0;
 }
