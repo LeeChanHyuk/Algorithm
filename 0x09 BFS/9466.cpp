@@ -1,68 +1,54 @@
-#include <bits/stdc++.h>
-#include <vector>
-#include <queue>
-#include <stack>
 #include <iostream>
-#pragma warning(disable: 4996)
-
+#include <vector>
 using namespace std;
-
-char stds[100002]; // ¿ì¼± ÀüºÎ 0À¸·Î ÃÊ±âÈ­ µÈ »óÅÂ.
-char choosen[100002]; // ¿ì¼± ÀüºÎ 0À¸·Î ÃÊ±âÈ­ µÈ »óÅÂ.
-int first_num = 0;
-
-int dfs(int num) // ÇĞ»ı ¹øÈ£¸¦ ÀÎÀÚ·Î ¹Ş°í
-{
-	int next_num = stds[num];
-	if (choosen[num] == 1) // Ã£¾Æ°£ ÇĞ»ıÀÌ ÀÌ¹Ì Â¦ÀÌ ÀÖ¾úÀ» °æ¿ì.
-		return 0;
-	if (next_num == first_num) // Á¦´ë·Î ·çÇÁ°¡ Çü¼ºµÇ¾úÀ» °æ¿ì.
-	{
-		choosen[num] = 1;
-		return 1;
-	}
-	if (next_num == num) // Ã£¾Æ°£ ÇĞ»ıÀÌ ÀÚ±âÀÚ½ÅÀÌ¶û ÇÑ´Ù°í ÇÒ °æ¿ì.
-		return 0;
-	int a = dfs(next_num);
-	if (a == 1)
-		choosen[num] = 1;
-	return a;
+ 
+vector<int> student; //í•™ìƒì´ ê°€ë¦¬í‚¤ëŠ” ë‹¤ë¥¸ í•™ìƒ ë²ˆí˜¸
+vector<int> first_student; //ì²« ë²ˆì§¸ë¡œ dfsë¥¼ ì‹œì‘í•œ í•™ìƒ ë²ˆí˜¸
+vector<int> visited; //ë°©ë¬¸ ìœ ë¬´
+ 
+int dfs(int start,int current,int cnt){
+    
+    if(visited[current]){
+        
+        //ì²« ë²ˆì§¸ë¡œ dfsë¥¼ ì‹œì‘í•œ í•™ìƒì´ ë§ëŠ”ì§€, ì‚¬ì´í´ì´ ë§ëŠ”ì§€
+        if(first_student[current]!=start)
+            return 0;
+        
+        //ì‚¬ì´í´ì— í•´ë‹¹ë˜ëŠ” í•™ìƒ ìˆ˜
+        return cnt-visited[current];
+    }
+    
+    first_student[current]=start;
+    visited[current]=cnt;
+    return dfs(start,student[current],cnt+1);
 }
-/*/**/
-int main(void)
-{
-	int test_case = 0;
-	cin >> test_case;
-	for (int test = 0; test < test_case; test++)
-	{
-		int num = 0;
-		cin >> num;
-		int poor = 0;
-		for (int i = 1; i <= num; i++)
-		{
-			int stud = 0;
-			cin >> stud;
-			stds[i] = stud;
-		}
-		// ÀÌ·¯¸é ¿©±â±îÁø ÀÏ´Ü ÇĞ»ıµéÀÌ Â¦Áş°í ½ÍÀº »ó´ë¸¦ ´Ù ¹ŞÀº »óÅÂ~
-
-		for (int i = 1; i <= num; i++)
-		{
-			if (choosen[i] == 1)
-				continue;
-			first_num = i;
-			int boolean = dfs(i);
-			// ÀÌ°Ô 1ÀÌ¸é ÀüºÎ 1·ÎÇØ¾ßÇÏ´Â°Å°í, 0ÀÌ¸é ÀüºÎ 0À¸·Î ÇØ¾ßÇÏ´Â °Å´Ù.
-			if (boolean != 1)
-				poor++;
-			else
-				choosen[i] = 1;
-		}
-		printf("%d\n", poor);
-		memset(stds, 0, sizeof(stds));
-		memset(choosen, 0, sizeof(choosen));
-	}
-	int test = 0;
-	scanf("%d", &test);
-	return 0;
+ 
+int main(){
+    
+    int T;
+    cin>>T;
+    
+    int n;
+    for(int testCase=0;testCase<T;testCase++){
+        
+        scanf("%d",&n);
+        
+        student=vector<int> (n+1,0);
+        first_student=vector<int> (n+1,0);
+        visited=vector<int> (n+1,0);
+        
+        for(int i=1;i<=n;i++)
+            scanf("%d",&student[i]);
+        
+        int ans=0;
+        for(int i=1;i<=n;i++){
+            if(!visited[i]){
+                ans+=dfs(i,i,1);
+            }
+        }
+        
+        printf("%d\n",n-ans);
+    }
+    
+    return 0;
 }

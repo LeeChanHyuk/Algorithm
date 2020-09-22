@@ -9,6 +9,11 @@
 #define X first
 #define Y second
 using namespace std;
+
+// 백준 2583번 영역 구하기
+// C++
+// 20200922
+// BFS 문제.
 int board[102][102];
 int via[102][102];
 
@@ -28,7 +33,7 @@ int main(void)
 		{
 			for (int k = y1; k < y2; k++)
 			{
-				via[j][k] = 1;
+				via[k][j] = 1;
 			}
 		}
 	}
@@ -42,9 +47,9 @@ int main(void)
 	{
 		for (int j = 0; j < height; j++)
 		{
-			if (via[i][j] == 1)
+			if (via[j][i] == 1)
 				continue;
-			via[i][j] = 1;
+			via[j][i] = 1;
 			for_via_queue.push({ i,j });
 			int max = 1;
 			area_num++;
@@ -58,29 +63,27 @@ int main(void)
 				{
 					int qx = x + dx[i];
 					int qy = y + dy[i];
-					if (qx >= height || qy >= width || qx < 0 || qy < 0)
+					if (qy >= height || qx >= width || qx < 0 || qy < 0)
 						continue;
-					if (via[qx][qy] == 1)
+					if (via[qy][qx] == 1)
 						continue;
-					via[qx][qy] = 1; // 여기 넣지 않으면 여러번 중복되서 추가될 수도 있다.
+					via[qy][qx] = 1; // 여기 넣지 않으면 여러번 중복되서 추가될 수도 있다.
 					max++;
 					for_via_queue.push({ qx, qy });
-					via[qx][qy] = 1;
 				}
 			}
 			area.push_back(max);
+			max=0;
 		}
 	}
 	cout << area_num;
 	cout << '\n';
 	sort(area.begin(), area.end());
-	for (int i = 0; i < area.size(); i++)
+	int size = area.size();
+	for (int i = 0; i < size; i++)
 	{
-		cout << area.back()<<' ';
-		area.pop_back();
+		cout << area[i]<<' ';
 	}
-	int abcd = 0;
-	scanf("%d", &abcd);
 
     return 0;
 }
