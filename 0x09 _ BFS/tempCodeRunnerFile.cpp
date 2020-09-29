@@ -7,25 +7,24 @@
 #define X first
 #define Y second
 using namespace std;
-int board[502][502] =
-    {{1, 1, 1, 0, 1, 0, 0, 0, 0, 0},
-     {1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-     {1, 1, 1, 0, 1, 0, 0, 0, 0, 0},
-     {1, 1, 0, 0, 1, 0, 0, 0, 0, 0},
-     {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}; // 1이 파란 칸, 0이 빨간 칸에 대응
+int board[52][52];
+int via[52][52];
 main(void)
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int via[502][502];
+
     int dx[4] = {1, 0, -1, 0};
     int dy[4] = {0, 1, 0, -1};
     int width = 10;
     int height = 10;
+    int command_num=0;
+    cin>>command_num;
+    for(int cases; cases<command_num; cases++)
+    {
 
+    
     queue<pair<int, int>> for_via_queue;
     via[0][0] = 1; // 파란칸이면 1로 표기.
     for_via_queue.push({0, 0});
@@ -46,6 +45,7 @@ main(void)
             via[qx][qy] = 1; // 여기 넣지 않으면 여러번 중복되서 추가될 수도 있다.
             for_via_queue.push({qx, qy});
         }
+    }
     }
 
     return 0;

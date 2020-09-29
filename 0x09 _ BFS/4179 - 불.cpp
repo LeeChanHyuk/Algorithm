@@ -21,7 +21,7 @@ int main(void)
     int dy[4] = {0, 1, 0, -1};
     int width = 10;
     int height = 10;
-    cin>>width>>height;
+    cin>>height>>width;
     queue<pair<int, int>>for_via_queue1;
     queue<pair<int,int>>for_via_queue2;
     for(int i=0; i<height; i++)
@@ -81,9 +81,7 @@ int main(void)
             int qx = x+ dx[i];
             int qy = y+ dy[i];
 
-            if(qx>=width || qy>=height || qx<0 || qy<0)
-                continue;
-            if(board[qy][qx] == '#' || via1[qy][qx]<=via2[y][x]+1 || via2[qy][qx]>=1)
+            if(board[qy][qx] == '#' || (via1[qy][qx] !=0 && via1[qy][qx]<=via2[y][x]+1) || via2[qy][qx]>=1)
                 continue;
             via2[qy][qx] = via2[y][x]+1;
             if(qy == height-1 || qx == width-1 || qx==0 || qy==0)
