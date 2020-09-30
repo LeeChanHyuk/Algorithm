@@ -45,7 +45,9 @@ int main(void)
         {
             int qx = x + dx[i];
             int qy = y + dy[i];
-            if (qx >= height || qx >= width || qx < 0 || qy < 0)
+            if (qx >= width || qy >= height || qx < 0 || qy < 0)
+                continue;
+            if(via[qy][qx][1]>=1)
                 continue;
             if (board[qy][qx] == '1' && z == 1) // 벽이 있고, 뚫을 수 있을 때, z==1이라는건 벽에는 가본적이 없다는 뜻.)
             {
