@@ -32,6 +32,7 @@ void print(int num, pair<int, int> start_point)
         stars[point6.first][point6.second] = '*';
         stars[point7.first][point7.second] = '*';
         stars[point8.first][point8.second] = '*';
+        
     }
     else
     {
@@ -43,8 +44,8 @@ void print(int num, pair<int, int> start_point)
         print(width, point5);
         print(width, point6);
         print(width, point7);
-        print(width, point8);
-    }
+        nt(width, point8);
+        }
 }
 
 int main(void)
