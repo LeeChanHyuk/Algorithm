@@ -24,9 +24,9 @@ int main(void)
     int dy[4] = {0, 1, 0, -1};
 
     queue<pair<int, int>> for_via_queue;
-	for (int i = 0; i < width; i++)
+	for (int i = 0; i < height; i++)
 	{
-		for (int j = 0; j < height; j++)
+		for (int j = 0; j < width; j++)
 		{
 			if (via[i][j] == 1)
 				continue;
@@ -34,20 +34,20 @@ int main(void)
 			for_via_queue.push({ i,j });
 			while (!for_via_queue.empty())
 			{
-				int x = for_via_queue.front().X;
-				int y = for_via_queue.front().Y;
+				int x = for_via_queue.front().second;
+				int y = for_via_queue.front().first;
 				for_via_queue.pop();
 
 				for (int i = 0; i < 4; i++)
 				{
 					int qx = x + dx[i];
 					int qy = y + dy[i];
-					if (qx >= height || qy >= width || qx < 0 || qy < 0)
+					if (qy >= height || qx >= width || qx < 0 || qy < 0)
 						continue;
-					if (via[qx][qy] == 1)
+					if (via[qy][qx] == 1)
 						continue;
-					for_via_queue.push({ qx, qy });
-					via[qx][qy] = 1;
+					for_via_queue.push({ qy, qx });
+					via[qy][qx] = 1;
 				}
 			}
 		}
