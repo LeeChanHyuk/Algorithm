@@ -6,41 +6,75 @@
 #include <queue>
 #include <algorithm>
 using namespace std;
+#define ll long long
 
-vector<int> a;
-vector<int> b;
+vector<ll> a;
+vector<ll> b;
 
-void moo_game(int now, int num)
+void moo_game(int number)
 {
-    int x1=a.back()+3;
-    int x2=a.back()+3+now+3;
-    a.push_back(x1);
-    a.push_back(x2);    
-    for(int i=0; i<a.size(); i++)
+    int s = 3;
+    int mid = 3;
+    while (s < number)
     {
-        b.push_back(a[i]);
-        
-        
+        mid++;
+        s = 2 * s + mid;
     }
-
+    while (1)
+    {
+        if (number == 1)
+        {
+            cout << 'm';
+            return;
+        }
+        else if (number == 2)
+        {
+            cout << 'o';
+            return;
+        }
+        else if (number == 3)
+        {
+            cout << 'o';
+            return;
+        }
+        int previous_s = (s - mid) / 2;
+        if (number > previous_s && number <= previous_s + mid)
+        {
+            // in mid
+            if (number - previous_s == 1)
+            {
+                cout << 'm';
+                return;
+            }
+            else
+            {
+                cout << 'o';
+                return;
+            }
+        }
+        else if (number <= previous_s)
+        {
+            // in previous_s
+            s = previous_s;
+            mid--;
+        }
+        else
+        {
+            // in second previous_s
+            number -= (previous_s + mid);
+            s = previous_s;
+            mid--;
+        }
+    }
 }
 
 int main(void)
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    a.push_back(0);
+    ll number = 0;
+    cin >> number;
+    moo_game(number);
+
     return 0;
-    //a
-    //aba
-    //abacaba
-    //abacabadabacaba
-    //0 - 0
-    //0 3 7 - 0 3 4
-    //0 3 7 10 15 18 21 - 3 4 3 5 3 4
-    //                  - 3 4 3 5 3 4 3 6 3 4 3 5 3 4
-    // 0
-    // 0 3 7
-    // 0 3 7 10 15 18 22
-    // 0 3 7 10 15 18 22 25 31
 }
