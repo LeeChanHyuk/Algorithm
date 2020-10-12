@@ -10,7 +10,7 @@ using namespace std;
 int arr[30];    // 0으로 초기화 되어 있음.
 int isused[30]; // false로 초기화 되어 있음.
 int s;
-int n;
+int n; // n
 int res = 0;
 int cnt = 0;
 int cnt2 = 0;
