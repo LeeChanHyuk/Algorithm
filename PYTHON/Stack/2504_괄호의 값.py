@@ -66,4 +66,7 @@ for i in range(len(line)):
             print(0)
             break
     if i == len(line)-1:
-        print(stack[0])
+        if len(stack) == 1 and type(stack[0]) is int:
+            print(stack[0])
+        else:
+            print(0)
