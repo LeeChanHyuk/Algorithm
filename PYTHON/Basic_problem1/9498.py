@@ -1,6 +1,6 @@
 from sys import stdin
 
-test_result = int(stdin.readline())
+test_result = int(stdin.readline().strip())
 if test_result>=90:
     print('A')
 elif test_result>=80:
