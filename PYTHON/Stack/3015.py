@@ -9,11 +9,10 @@ for i in range(N):
         count += (stack[-1][1] + 1)
         stack.pop()
     if stack and stack[-1][0] == num:
-        last_same = stack[-1][1] # 마지막 숫자랑 같은 숫자의 개수
-        if len(stack) > (last_same + 1):
-            count += (last_same + 2)
+        if len(stack) > 1:
+            count += (stack[-1][1] + 2)
         else:
-            count += (last_same + 1)
+            count += (stack[-1][1] + 1)
         stack[-1][1] += 1
         continue
     if stack:
