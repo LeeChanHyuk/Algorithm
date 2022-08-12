@@ -1,12 +1,13 @@
 from cmath import inf
 from sys import stdin
+from collections import deque
 
 height, width = map(int, stdin.readline().strip().split(' '))
 dx = [1, 0, -1, 0]
 dy = [0, -1, 0, 1]
 
 board = []
-queue = []
+queue = deque()
 via = []
 
 def initialize(width, height, board, via):
@@ -24,8 +25,8 @@ def bfs(board, queue, via, width, height):
     queue.append((1, 0, 0))
     via[1][0][0] = 0
     via[0][0][0] = 0
-    while len(queue) > 0:
-        wall_break, origin_y, origin_x = queue.pop(0)
+    while len(queue) > 0 and success == False:
+        wall_break, origin_y, origin_x = queue.popleft()
         for i in range(4):
             dest_x, dest_y = origin_x + dx[i], origin_y + dy[i]
             if dest_x >= width or dest_x < 0:
@@ -39,13 +40,13 @@ def bfs(board, queue, via, width, height):
                 if via[wall_break][dest_y][dest_x] > via[wall_break][origin_y][origin_x] + 1 and wall_break:
                     queue.append((0, dest_y, dest_x))
                     via[0][dest_y][dest_x] = via[wall_break][origin_y][origin_x] + 1
-                    via[1][dest_y][dest_x] = via[wall_break][origin_y][origin_x] + 1
                 else:
                     continue
             elif via[wall_break][dest_y][dest_x] > via[wall_break][origin_y][origin_x] + 1:
                 queue.append((wall_break, dest_y, dest_x))
                 via[0][dest_y][dest_x] = via[wall_break][origin_y][origin_x] + 1
-                via[1][dest_y][dest_x] = via[wall_break][origin_y][origin_x] + 1
+                if wall_break == 1:
+                    via[1][dest_y][dest_x] = via[wall_break][origin_y][origin_x] + 1
 
     if success:
         print(via[wall_break][origin_y][origin_x] + 2)
@@ -53,4 +54,7 @@ def bfs(board, queue, via, width, height):
         print(-1)
 
 initialize(width=width, height=height, board=board, via=via)
-bfs(board, queue, via, width, height)
+if width == 1 and height == 1:
+    print(1)
+else:
+    bfs(board, queue, via, width, height)
