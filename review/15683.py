@@ -1,17 +1,15 @@
 from sys import stdin
+from copy import deepcopy
 
 row, col = map(int, stdin.readline().strip().split())
 board = []
 cctvs = []
-block = []
 for i in range(row):
 	inputs = list(map(int, stdin.readline().strip().split(' ')))
 	for j in range(col):
 		if inputs[j] > 0 and inputs[j] < 6:
 			cctvs.append([inputs[j], (i, j)]) # cctv_sort, position
-		elif inputs[j] == 6:
-			block.append([(i, j)])
-		board.append(inputs)
+	board.append(inputs)
 
 result = 100
 
@@ -21,7 +19,7 @@ def cctv_route_calculation(cctv):
 	elif cctv == 2:
 		return [[(0, -1), (0, 1)], [(1, 0), (-1, 0)]]
 	elif cctv == 3:
-		return [[(1, 0), (0, 1)], [(0, 1), (-1, 0)], [(-1, 0), (0, -1)], [(0, -1), (0, 1)]]
+		return [[(1, 0), (0, 1)], [(0, 1), (-1, 0)], [(-1, 0), (0, -1)], [(0, -1), (1, 0)]]
 	elif cctv == 4:
 		return [[(0, -1), (1, 0), (0, 1)], [(1, 0), (0, 1), (-1, 0)], [(0, 1), (-1, 0), (0, -1)], [(-1, 0), (0, -1), (1, 0)]]
 	elif cctv == 5:
@@ -42,7 +40,7 @@ def back_tracking(k, temp_board):
 		cctv = cctvs[k]
 		cctv_directions = cctv_route_calculation(cctv[0])
 		cctv_position = cctv[1]
-		save_board = temp_board.copy()
+		save_board = deepcopy(temp_board)
 		for i in range(len(cctv_directions)):
 			cctv_direction = cctv_directions[i]
 			for j in range(len(cctv_direction)):
@@ -57,9 +55,9 @@ def back_tracking(k, temp_board):
 						break
 					temp_board[dest_y][dest_x] = 7
 			back_tracking(k+1, temp_board)
-			temp_board = save_board
+			temp_board = deepcopy(save_board)
 
-back_tracking(0, board.copy())
+back_tracking(0, deepcopy(board))
 print(result)
 
 
