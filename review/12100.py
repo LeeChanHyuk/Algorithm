@@ -100,7 +100,7 @@ def slant(direction, board, zero_board):
 						new_board[pivot][j] = temp_num_list[i]
 					pivot += 1
 				else:
-					if board[i][j] > 0:
+					if temp_num_list[i] > 0:
 						new_board[pivot][j] = temp_num_list[i]
 	return new_board
 			
