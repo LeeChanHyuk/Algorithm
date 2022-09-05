@@ -20,7 +20,7 @@ result = 0
 for i in range(12):
     line = stdin.readline().strip()
     via.append([0] * 6)
-    board.append(line)
+    board.append(list(line))
         
 def bomb_initialization(board, deque):
     R, G, B, P, Y = 0, 0, 0, 0, 0
@@ -65,7 +65,8 @@ def bomb(bomb_dict, board):
 def bfs(board, via, deque, bomb_dict, result):
     via_save = deepcopy(via)
     while 1:
-        deque = bomb_initialization(board, deque)
+        original_bomb = []
+        deque = bomb_initialization(board, original_bomb)
         via = deepcopy(via_save)
         while len(deque) > 0:
             [origin_y, origin_x], origin_color = deque.popleft()
