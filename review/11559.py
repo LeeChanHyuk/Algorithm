@@ -2,9 +2,9 @@ from sys import stdin
 from copy import deepcopy
 from collections import deque
 
+
 board = []
 via = []
-deque_ = deque()
 dx = [1, 0, -1, 0]
 dy = [0, -1, 0 ,1]
 
@@ -16,25 +16,26 @@ bomb_dict['B'] = [0, []]
 bomb_dict['P'] = [0, []]
 bomb_dict['Y'] = [0, []]
 result = 0
+deque_ = deque()
 
 for i in range(12):
     line = stdin.readline().strip()
     via.append([0] * 6)
     board.append(list(line))
         
-def bomb_initialization(board, deque):
+def bomb_initialization(deque):
     R, G, B, P, Y = 0, 0, 0, 0, 0
     for i in range(12):
         for j in range(6):
-            if line[j] == 'R' and R == 0:
+            if board[i][j] == 'R':
                 deque.append([[i, j], 'R'])
-            elif line[j] == 'G' and G == 0:
+            elif board[i][j] == 'G':
                 deque.append([[i, j], 'G'])
-            elif line[j] == 'B' and B == 0:
+            elif board[i][j] == 'B':
                 deque.append([[i, j], 'B'])
-            elif line[j] == 'P' and P == 0:
+            elif board[i][j] == 'P':
                 deque.append([[i, j], 'P'])
-            elif line[j] == 'Y' and Y == 0:
+            elif board[i][j] == 'Y':
                 deque.append([[i, j], 'Y'])
     return deque
     
@@ -53,39 +54,53 @@ def bomb(bomb_dict, board):
     for i in range(12):
         for j in range(6):
             if board[i][j] == 'K':
-                for k in range(0, j):
-                    board[k][j] = board[k+1][j]
+                for k in range(i, 0, -1):
+                    board[k][j] = board[k-1][j]
                 board[0][j] = '.'
     
     # reset
     for color in ['R', 'G', 'B', 'P', 'Y']:
         bomb_dict[color] = [0, []]
     return board, bomb_dict, success
-            
-def bfs(board, via, deque, bomb_dict, result):
-    via_save = deepcopy(via)
+
+def bfs(board, via_, deque_, bomb_dict, result):
     while 1:
-        original_bomb = []
-        deque = bomb_initialization(board, original_bomb)
+        via_save = deepcopy(via_)
+        original_bomb = deepcopy(deque_)
+        initial_bombs = bomb_initialization(original_bomb)
         via = deepcopy(via_save)
-        while len(deque) > 0:
-            [origin_y, origin_x], origin_color = deque.popleft()
-            via[origin_y][origin_x] += 1
-            for i in range(4):
-                dest_y, dest_x = origin_y + dy[i], origin_x + dx[i]
-                if dest_x < 0 or dest_y < 0 or dest_x >= 6 or dest_y >= 12:
-                    continue
-                if board[dest_y][dest_x] == '.' or board[dest_y][dest_x] != origin_color:
-                    continue
-                if via[dest_y][dest_x] > 0:
-                    continue
-                via[dest_y][dest_x] += 1
-                deque.append([[dest_y, dest_x], origin_color])
-                if bomb_dict[origin_color][0] == 0:
-                    bomb_dict[origin_color][0] += 1
-                    bomb_dict[origin_color][1].append([origin_y, origin_x])
-                bomb_dict[origin_color][0] += 1
-                bomb_dict[origin_color][1].append([dest_y, dest_x])
+        temp_deque = deque()
+        for i in range(len(initial_bombs)):
+            if via[initial_bombs[i][0][0]][initial_bombs[i][0][1]] > 0:
+                continue
+            temp_deque.append(initial_bombs[i])
+            temp_bomb_dict = dict()
+            for color in ['R', 'G', 'B', 'P', 'Y']:
+                temp_bomb_dict[color] = [0, []]
+            while len(temp_deque) > 0:
+                [origin_y, origin_x], origin_color = temp_deque.popleft()
+                via[origin_y][origin_x] += 1
+                for i in range(4):
+                    dest_y, dest_x = origin_y + dy[i], origin_x + dx[i]
+                    if dest_x < 0 or dest_y < 0 or dest_x >= 6 or dest_y >= 12:
+                        continue
+                    if board[dest_y][dest_x] == '.' or board[dest_y][dest_x] != origin_color:
+                        continue
+                    if via[dest_y][dest_x] > 0:
+                        continue
+                    via[dest_y][dest_x] += 1
+                    temp_deque.append([[dest_y, dest_x], origin_color])
+                    if temp_bomb_dict[origin_color][0] == 0:
+                        temp_bomb_dict[origin_color][0] += 1
+                        temp_bomb_dict[origin_color][1].append([origin_y, origin_x])
+                    temp_bomb_dict[origin_color][0] += 1
+                    temp_bomb_dict[origin_color][1].append([dest_y, dest_x])
+            for color in ['R', 'G', 'B', 'P', 'Y']:
+                if temp_bomb_dict[color][0] >= 4:
+                    bomb_dict[color][0] += temp_bomb_dict[color][0]
+                    for i in range(temp_bomb_dict[color][0]):
+                        bomb_dict[color][1].append(temp_bomb_dict[color][1][i])
+            
         board, bomb_dict, success = bomb(bomb_dict, board)
         if success == 0:
             break

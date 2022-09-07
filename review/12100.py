@@ -20,7 +20,7 @@ def slant(direction, board, zero_board):
 			pivot = N-1
 			temp_num_list = []
 			for j in range(N):
-				if board[i][j] >0:
+				if board[i][j] > 0:
 					temp_num_list.append(board[i][j])
 			for j in range(len(temp_num_list) - 1, -1, -1):
 				if pass_time:
