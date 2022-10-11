@@ -23,31 +23,35 @@ def check(x_pivot):
 def recursive(x_pivot, x, num, direction, first, counter_part_pivot, left):
     if first:
         if num != 0:
+            original_left = x_pivot[num][0]
             x_pivot[num][0] -= direction
         if num != 3:
+            original_right = x_pivot[num][1]
             x_pivot[num][1] -= direction
         check(x_pivot)
         if num != 3:
-            recursive(x_pivot, x, num+1, -direction, False, (x_pivot[num][1] + direction + 8)%8, 1)
+            recursive(x_pivot, x, num+1, -direction, False, original_right, 1)
         if num != 0:
-            recursive(x_pivot, x, num-1, -direction, False, (x_pivot[num][0] + direction + 8) % 8, 0)
+            recursive(x_pivot, x, num-1, -direction, False, original_left, 0)
     else:
         if left:
             if x[num-1][counter_part_pivot] != x[num][x_pivot[num][0]]:
                 x_pivot[num][0] -= direction
                 check(x_pivot)
                 if num != 3:
+                    original_right = x_pivot[num][1]
                     x_pivot[num][1] -= direction
                     check(x_pivot)
-                    recursive(x_pivot, x, num+1, -direction, False, (x_pivot[num][1] + direction + 8) % 8, 1)
+                    recursive(x_pivot, x, num+1, -direction, False, original_right, 1)
         else:
-            if x[num-1][counter_part_pivot] != x[num][x_pivot[num][1]]:
+            if x[num+1][counter_part_pivot] != x[num][x_pivot[num][1]]:
                 x_pivot[num][1] -= direction
                 check(x_pivot)
                 if num != 0:
+                    original_left = x_pivot[num][0]
                     x_pivot[num][0] -= direction
                     check(x_pivot)
-                    recursive(x_pivot, x, num-1, -direction, False, x_pivot[num][0] + direction, 0)
+                    recursive(x_pivot, x, num-1, -direction, False, original_left, 0)
 
 
 x, order = get_input()
@@ -64,7 +68,10 @@ for [num, direction] in order:
 
 result = 0
 for i in range(4):
-    pivot = (x_pivot[i][1] - 2 + 8) % 8
+    if i < 3:
+        pivot = (x_pivot[i][1] - 2 + 8) % 8
+    else:
+        pivot = (x_pivot[i][0] + 2) % 8
     if x[i][pivot] == '1':
         result += (2 ** i)
 print(result)
