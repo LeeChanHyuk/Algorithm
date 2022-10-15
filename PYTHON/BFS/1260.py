@@ -13,16 +13,25 @@ for i in range(M):
     node[end_node-1].append(start_node)
 for i in range(N):
     node[i].sort()
+    node[i][:] = node[i][::-1]
 
-def dfs(current_node):
+def dfs():
     global node, via1, V
-    via1[current_node-1] = 1
-    print(current_node, end=' ')
-    for i in range(len(node[current_node-1])):
-        if via1[node[current_node-1][i]-1]:
-            continue
-        dfs(node[current_node-1][i])
-
+    stack = []
+    via1[V-1] = 1
+    stack.append(V)
+    print(V, end = ' ')
+    while len(stack) > 0:
+        start_node = stack.pop()
+        for i in range(len(node[start_node-1])):
+            current_node = node[start_node-1][i]
+            if via1[current_node-1] > 0:
+                continue
+            via1[current_node-1] = 1
+            print(current_node, end=' ')
+            stack.append(current_node)
+            break
+    print()
 
 def bfs():
     global node, via2, V
@@ -39,8 +48,9 @@ def bfs():
             via2[current_node-1] = 1
             print(current_node, end=' ')
             queue.append(current_node)
-dfs(V)
-print()
+dfs()
+for i in range(N):
+    node[i].sort()
 bfs()
 
 
