@@ -14,4 +14,4 @@ for i in range(2, N+1):
 			D[i][j] = D[i-1][8]
 		else:
 			D[i][j] = D[i-1][j-1] + D[i-1][j+1]
-print(sum(D[N]))
+print(sum(D[N]) % 1000000000)
