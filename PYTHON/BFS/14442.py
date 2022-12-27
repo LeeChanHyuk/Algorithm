@@ -29,7 +29,7 @@ def bfs():
 			if via[dest_y][dest_x][origin_k] != -1:
 				continue
 			if board[dest_y][dest_x] == '1':
-				if origin_k < K and via[origin_y][origin_x][origin_k+1] == -1:
+				if origin_k < K and via[dest_y][dest_x][origin_k+1] == -1:
 					via[dest_y][dest_x][origin_k+1] = via[origin_y][origin_x][origin_k] + 1
 					queue.append([dest_x, dest_y, origin_k + 1])
 				continue
