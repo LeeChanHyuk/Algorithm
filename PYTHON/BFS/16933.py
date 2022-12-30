@@ -8,8 +8,8 @@ for i in range(N):
 	board.append(stdin.readline().strip())
 
 via = [[[-1] * (K + 1) for j in range(M)] for k in range(N)]
-dx = [0, 1, 0, -1, 0]
-dy = [1, 0, -1, 0, 0]
+dx = [0, 1, 0, -1]
+dy = [1, 0, -1, 0]
 
 def state_change(state):
 	if state == 0:
@@ -31,7 +31,7 @@ def bfs():
 			success = True
 			result = via[origin_y][origin_x][origin_k]
 			break
-		for i in range(5):
+		for i in range(4):
 			dest_x, dest_y = origin_x + dx[i], origin_y + dy[i]
 			if dest_x < 0 or dest_x >= M or dest_y < 0 or dest_y >= N:
 				continue
@@ -42,11 +42,9 @@ def bfs():
 					queue.append([dest_y, dest_x, origin_k + 1, state_change(state)])
 					via[dest_y][dest_x][origin_k+1] = via[origin_y][origin_x][origin_k] + 1
 				elif origin_k < K and via[dest_y][dest_x][origin_k+1] == -1:
-					block = True
+					queue.append([dest_y, dest_x, origin_k + 1, 0])
+					via[dest_y][dest_x][origin_k+1] = via[origin_y][origin_x][origin_k] + 2
 				continue
-			if i == 4 and block:
-				queue.append([origin_y, origin_x, origin_k, state_change(state)])
-				via[origin_y][origin_x][origin_k] = via[origin_y][origin_x][origin_k] + 1
 			queue.append([dest_y, dest_x, origin_k, state_change(state)])
 			via[dest_y][dest_x][origin_k] = via[origin_y][origin_x][origin_k] + 1
 	if success:
