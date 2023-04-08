@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <deque>
 
 using namespace std;
 
@@ -8,9 +8,9 @@ int board[50][50] = {0};
 int dx[4] = {0, 1, 0, -1};
 int dy[4] = {1, 0, -1, 0};
 
-int bfs(vector<int> x_pos_vec, vector<int> y_pos_vec)
+int bfs(deque<int> x_pos_vec, deque<int> y_pos_vec)
 {
-    vector<pair<int, int>> queue;
+    deque<pair<int, int>> queue;
     int result = 0;
     while(!x_pos_vec.empty())
     {
@@ -41,6 +41,7 @@ int bfs(vector<int> x_pos_vec, vector<int> y_pos_vec)
             }
         }
     }
+    return result;
 }
 
 int main()
@@ -49,14 +50,14 @@ int main()
     int M = 0; 
     int N = 0;
     int K = 0;
-    vector<int> x_pos_vec;
-    vector<int> y_pos_vec;
+    deque<int> x_pos_vec;
+    deque<int> y_pos_vec;
     scanf("%d", &T);
-    scanf("%d %d %d", &M, &N, &K);
     int x_pos = 0;
     int y_pos = 0;
     for(int t=0; t<T; t++)
     {
+        scanf("%d %d %d", &M, &N, &K);
         for(int i=0; i<K; i++)
         {   
             scanf("%d %d", &x_pos, &y_pos);
