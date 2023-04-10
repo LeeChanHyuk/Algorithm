@@ -1,10 +1,12 @@
 #include <iostream>
 #include <deque>
+#include <stdio.h>
+#include <string.h>
 
 using namespace std;
 
-int via[50][50] = {0};
-int board[50][50] = {0};
+int via[51][51] = {0};
+int board[51][51] = {0};
 int dx[4] = {0, 1, 0, -1};
 int dy[4] = {1, 0, -1, 0};
 
@@ -26,15 +28,18 @@ int bfs(deque<int> x_pos_vec, deque<int> y_pos_vec)
 
         while(!queue.empty())
         {
-            y_pos, x_pos = queue[0].first, queue[0].second;
-            queue.pop_back();
+            y_pos = queue[0].first;
+            x_pos = queue[0].second;
+            queue.pop_front();
             for(int i=0; i<4; i++)
             {
                 int dest_y = y_pos + dy[i];
                 int dest_x = x_pos + dx[i];
-                if(dest_y>50 || dest_x>50 || dest_x < 1 || dest_y < 1)
+                if(dest_y>=50 || dest_x>=50 || dest_x < 0 || dest_y < 0)
                     continue;
                 else if(via[dest_y][dest_x] > 0)
+                    continue;
+                else if(board[dest_y][dest_x] == 0)
                     continue;
                 via[dest_y][dest_x] = 1;
                 queue.push_back({dest_y, dest_x});
@@ -57,6 +62,10 @@ int main()
     int y_pos = 0;
     for(int t=0; t<T; t++)
     {
+        x_pos_vec.clear();
+        y_pos_vec.clear();
+        memset(via, 0, sizeof(via));
+        memset(board, 0, sizeof(board));
         scanf("%d %d %d", &M, &N, &K);
         for(int i=0; i<K; i++)
         {   
