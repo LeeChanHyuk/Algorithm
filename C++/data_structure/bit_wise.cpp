@@ -1,9 +1,9 @@
 #include <iostream>
 #include <stdio.h>
-#include <hash_map>
-
-using namespace std;
 
 int main(void)
 {
-
+    int a = 1;
+    printf("%d", (a<<3));
+    return 0;
+}
