@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <iostream>
 #include <string>
 #include <string.h>
@@ -8,32 +7,35 @@ using namespace std;
 char node[2002];
 double node_double[2002];
 
-double in_order(int index)
+double in_order(int index, int n)
 {
+    if (index > n)
+        return 0;
+
     if (node[index] == '+')
     {
-        double val = in_order(index * 2) + in_order((index * 2) + 1);
+        double val = in_order(index * 2, n) + in_order((index * 2) + 1, n);
         return val;
     }
     else if (node[index] == '-')
     {
-        double val = in_order(index * 2) - in_order((index * 2) + 1);
+        double val = in_order(index * 2, n) - in_order((index * 2) + 1, n);
         return val;
     }
     else if (node[index] == '*')
     {
-        double val = in_order(index * 2) * in_order((index * 2) + 1);
+        double val = in_order(index * 2, n) * in_order((index * 2) + 1, n);
         return val;
     }
     else if (node[index] == '/')
     {
-        double left = in_order((index * 2));
-        double right = in_order((index * 2) + 1);
+        double left = in_order((index * 2), n);
+        double right = in_order((index * 2) + 1, n);
         if (right == 0)
             return 0.0;
         else
         {
-            double val = in_order(index * 2) / in_order((index * 2) + 1);
+            double val = in_order(index * 2, n) / in_order((index * 2) + 1, n);
             return val;
         }
     }
@@ -66,7 +68,7 @@ int main(void)
             else
                 node_double[i] = stod(data);
         }
-        int result = in_order(1);
+        int result = in_order(1, n);
         cout << "#" << test_case << ' ' << result << '\n';
     }
 
