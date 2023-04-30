@@ -1,0 +1,4 @@
+﻿  1245.cpp
+C:\Users\cjsgk\source\repos\Algorithm\Algorithm\1245.cpp(59,17): warning C4101: 'mass' :참조되지 않은 지역 변수입니다.
+C:\Users\cjsgk\source\repos\Algorithm\Algorithm\1245.cpp(59,7): warning C4101: 'position' :참조되지 않은 지역 변수입니다.
+  Algorithm.vcxproj -> C:\Users\cjsgk\source\repos\Algorithm\x64\Debug\Algorithm.exe
